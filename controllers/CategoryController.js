@@ -2,20 +2,19 @@
 
 const {GraphQLObjectType, GraphQLList, GraphQLString, GraphQLNonNull} = require('graphql');
 const model = require('../models/category');
-const modelType = require('../schemasQL/categoryType');
 
 // logic process
 const _getAll = {
-  type: new GraphQLList(modelType),
+  type: new GraphQLList(categoryType),
   resolve: async() => {
-    const _model = await model.find();
+    const _model = await model.find().populate('created_by').exec();
     //
     return _model;
   }
 }
 
 const _getById = {
-  type: modelType,
+  type: categoryType,
   args: {
     _id: { type: GraphQLString }
   },
@@ -24,25 +23,25 @@ const _getById = {
     //
     return _model;
   }
-}
+};
 
 const _add = {
-  type: modelType,
+  type: categoryType,
   args: {
     title: { type: GraphQLString },
     logo: { type: GraphQLString },
     created_by: { type: GraphQLString }
   },
-  resolve: (root, args) => {
+  resolve: async(root, args) => {
     const _model = new model(args);
-    const _newModel = _model.save();
+    const _newModel = await _model.save();
     //
     return _newModel;
   }
 };
 
 const _delete = {
-  type: modelType,
+  type: categoryType,
   args: {
     _id: { type: new GraphQLNonNull(GraphQLString) }
   },
@@ -51,7 +50,7 @@ const _delete = {
     //
     return _model;
   }
-}
+};
 
 module.exports = {
   getCategories: _getAll,

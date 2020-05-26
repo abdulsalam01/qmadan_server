@@ -10,7 +10,7 @@ const categoryType = new GraphQLObjectType({
     title: { type: GraphQLString },
     logo: { type: GraphQLString },
     create_at: { type: GraphQLString },
-    created_by: { type: GraphQLString }
+    created_by: { type: userType }
   })
 });
 

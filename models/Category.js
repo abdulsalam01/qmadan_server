@@ -11,11 +11,11 @@ const categorySchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  'created_by': [{
+  'created_by': {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'users',
+    ref: 'User',
     required: true
-  }]
+  }
 }, {collection: 'categories'});
 
 module.exports = mongoose.model('Category', categorySchema);

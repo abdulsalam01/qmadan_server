@@ -5,7 +5,11 @@
  */
  // database connection
 require('../config/connection');
-//
+
+// schemas of graphql app - call once as global var
+global.userType = require('../schemasQL/userType');
+global.categoryType = require('../schemasQL/categoryType');
+
 var app = require('../app');
 var debug = require('debug')('qmadan-server:server');
 var http = require('http');

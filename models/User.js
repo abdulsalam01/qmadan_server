@@ -1,15 +1,15 @@
 'user strict';
 
-const mongoose, { Schema } = require('mongoose');
-const timestamps = require('mongoose-timestamp');
+const mongoose = require('mongoose');
+// const timestamps = require('mongoose-timestamp');
 
-const userSchema = Schema({
+const userSchema = mongoose.Schema({
   'name': String,
   'username': String,
   'password': String
 });
 
 //
-userSchema.plugin(timestamps);
+// userSchema.plugin(timestamps);
 
-module.exports = userSchema.model('User', userSchema, 'users');
+module.exports = mongoose.model('User', userSchema, 'users');
