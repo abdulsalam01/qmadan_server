@@ -40,6 +40,21 @@ const _add = {
   }
 };
 
+const _update = {
+  type: userType,
+  args: {
+    _id: { type: new GraphQLNonNull(GraphQLString) },
+    name: { type: GraphQLString },
+    username: { type: GraphQLString },
+    password: { type: GraphQLString }
+  },
+  resolve: async(root, args) => {
+    const _model = await model.findByIdAndUpdate(args._id, args, {new: true});
+    //
+    return _model;
+  }
+};
+
 const _delete = {
   type: userType,
   args: {
@@ -56,5 +71,6 @@ module.exports = {
   getUsers: _getAll,
   getUser: _getById,
   addUser: _add,
+  updateUser: _update,
   removeUser: _delete
 }

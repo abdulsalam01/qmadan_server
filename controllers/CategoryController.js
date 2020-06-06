@@ -19,7 +19,7 @@ const _getById = {
     _id: { type: GraphQLString }
   },
   resolve: async(root, args) => {
-    const _model = await model.findById(args._id);
+    const _model = await model.findById(args._id).populate('created_by').exec();
     //
     return _model;
   }
@@ -40,6 +40,21 @@ const _add = {
   }
 };
 
+const _update = {
+  type: categoryType,
+  args: {
+    _id: { type: new GraphQLNonNull(GraphQLString) },
+    title: { type: GraphQLString },
+    logo: { type: GraphQLString },
+    created_by: { type: GraphQLString }
+  },
+  resolve: async(root, args) => {
+    const _model = await model.findByIdAndUpdate(args._id, args, {new: true});
+    //
+    return _model;
+  }
+};
+
 const _delete = {
   type: categoryType,
   args: {
@@ -56,5 +71,6 @@ module.exports = {
   getCategories: _getAll,
   getCategory: _getById,
   addCategory: _add,
+  updateCategory: _update,
   removeCategory: _delete
 }

@@ -1,8 +1,16 @@
 'use strict';
 
 const { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } = require('graphql');
-const { getCategories, getCategory, addCategory, removeCategory } = require('./controllers/categoryController');
-const { getUsers, getUser, addUser, removeUser } = require('./controllers/userController');
+const { getCategories,
+        getCategory,
+        addCategory,
+        updateCategory,
+        removeCategory } = require('./controllers/categoryController');
+const { getUsers,
+        getUser,
+        addUser,
+        updateUser,
+        removeUser } = require('./controllers/userController');
 
 const appSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -15,11 +23,13 @@ const appSchema = new GraphQLSchema({
     })
   }),
   mutation: new GraphQLObjectType({
-    name: 'mutation',
+    name: 'Mutation',
     fields: {
       addCategory: addCategory,
+      updateCategory: updateCategory,
       removeCategory: removeCategory,
       addUser: addUser,
+      updateUser: updateUser,
       removeUser: removeUser
     }
   })
