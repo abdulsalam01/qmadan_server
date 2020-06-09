@@ -11,6 +11,11 @@ const { getUsers,
         addUser,
         updateUser,
         removeUser } = require('./controllers/userController');
+const { getStories,
+        getStory,
+        addStory,
+        updateStory,
+        removeStory } = require('./controllers/storyController');
 
 const appSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -19,7 +24,9 @@ const appSchema = new GraphQLSchema({
       categories: getCategories,
       category: getCategory,
       users: getUsers,
-      user: getUser
+      user: getUser,
+      stories: getStories,
+      story: getStory
     })
   }),
   mutation: new GraphQLObjectType({
@@ -30,7 +37,10 @@ const appSchema = new GraphQLSchema({
       removeCategory: removeCategory,
       addUser: addUser,
       updateUser: updateUser,
-      removeUser: removeUser
+      removeUser: removeUser,
+      addStory: addStory,
+      updateStory: updateStory,
+      removeStory: removeStory
     }
   })
 });
