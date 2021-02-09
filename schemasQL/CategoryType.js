@@ -5,11 +5,7 @@ const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLScalarType} = require
 const scalarDate = new GraphQLScalarType({
   name: 'Date',
   serialize: (value) => {
-    const year = value.getFullYear();
-    const month = value.getMonth();
-    const day = value.getDate();
-
-    return `${year}-${month}-${day}:${value.getTime()}`;
+    return value.getTime();
   },
   parseValue: (value) => { return new Date(value); }
 });
@@ -25,7 +21,8 @@ const categoryType = new GraphQLObjectType({
       type: scalarDate,
       resolve: () => { return new Date() }
     },
-    created_by: { type: userType }
+    created_by: { type: userType },
+    page: { type: baseQuery }
   })
 });
 

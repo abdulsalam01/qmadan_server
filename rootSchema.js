@@ -1,6 +1,6 @@
 'use strict';
 
-const { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } = require('graphql');
+const { GraphQLObjectType, GraphQLSchema, GraphQLString } = require('graphql');
 const { getCategories,
         getCategory,
         addCategory,
@@ -16,6 +16,13 @@ const { getStories,
         addStory,
         updateStory,
         removeStory } = require('./controllers/storyController');
+const {
+  getSuggestions,
+  getSuggestion,
+  addSuggetion,
+  updateSuggestion,
+  removeSuggestion
+} = require('./controllers/SuggestionController');
 
 const appSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -26,7 +33,9 @@ const appSchema = new GraphQLSchema({
       users: getUsers,
       user: getUser,
       stories: getStories,
-      story: getStory
+      story: getStory,
+      suggestions: getSuggestions,
+      suggestion: getSuggestion,
     })
   }),
   mutation: new GraphQLObjectType({
@@ -40,7 +49,10 @@ const appSchema = new GraphQLSchema({
       removeUser: removeUser,
       addStory: addStory,
       updateStory: updateStory,
-      removeStory: removeStory
+      removeStory: removeStory,
+      addSuggetion,
+      updateSuggestion,
+      removeSuggestion
     }
   })
 });

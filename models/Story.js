@@ -24,6 +24,6 @@ const storySchema = mongoose.Schema({
     ref: 'User',
     required: true
   }
-}, {collection: 'story'});
+}, {collection: 'stories'});
 
 module.exports = mongoose.model('Story', storySchema);

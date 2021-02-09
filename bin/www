@@ -10,6 +10,11 @@ require('../config/connection');
 global.userType = require('../schemasQL/userType');
 global.categoryType = require('../schemasQL/categoryType');
 global.storyType = require('../schemasQL/storyType');
+global.suggestionType = require('../schemasQL/SuggestionType');
+global.baseQuery = require('../schemasQL/BaseQuery');
+
+// global models
+global.basePage = require('../models/BaseQuery');
 
 var app = require('../app');
 var debug = require('debug')('qmadan-server:server');

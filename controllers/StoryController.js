@@ -1,13 +1,19 @@
 'use strict';
 
-const {GraphQLObjectType, GraphQLList, GraphQLString, GraphQLNonNull} = require('graphql');
+const {GraphQLList, GraphQLString, GraphQLNonNull} = require('graphql');
 const model = require('../models/story');
 
 // logic process
 const _getAll = {
   type: new GraphQLList(storyType),
-  resolve: async() => {
-    const _model = await model.find().populate('category').populate('created_by').exec();
+  args: basePage,
+  resolve: async(root, args) => {
+    const _model = await model.find()
+      .skip(args.skip ?? 0)
+      .limit(args.take ?? 0)
+      .populate('category')
+      .populate('created_by')
+      .exec();
     //
     return _model;
   }
@@ -16,12 +22,16 @@ const _getAll = {
 const _getById = {
   type: storyType,
   args: {
+    ...basePage,
     _id: { type: new GraphQLNonNull(GraphQLString) }
   },
   resolve: async(root, args) => {
-    const _model = await model.findById(args._id).
-                    populate('category').
-                    populate('created_by').exec();
+    const _model = await model.findById(args._id)
+                  .skip(args.skip ?? 0)
+                  .limit(args.take ?? 0)
+                  .populate('category')
+                  .populate('created_by')
+                  .exec();
     //
     return _model;
   }

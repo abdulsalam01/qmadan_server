@@ -1,6 +1,6 @@
 'use strict';
 
-const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLScalarType} = require('graphql');
+const { GraphQLObjectType, GraphQLID, GraphQLString } = require('graphql');
 
 const storyType = new GraphQLObjectType({
   name: 'storyType',
@@ -11,7 +11,8 @@ const storyType = new GraphQLObjectType({
     body: { type: GraphQLString },
     created_at: { type: GraphQLString },
     category: { type: categoryType },
-    created_by: { type: userType }
+    created_by: { type: userType },
+    base: { type: baseQuery }
   })
 });
 

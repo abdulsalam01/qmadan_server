@@ -12,6 +12,6 @@ const suggestionSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   }
-}, {collection: 'suggestion'});
+}, {collection: 'suggestions'});
 
 module.exports = mongoose.model('Suggestion', suggestionSchema);
