@@ -2,20 +2,20 @@
 
 const { GraphQLObjectType, GraphQLSchema, GraphQLString } = require('graphql');
 const { getCategories,
-        getCategory,
-        addCategory,
-        updateCategory,
-        removeCategory } = require('./controllers/categoryController');
+  getCategory,
+  addCategory,
+  updateCategory,
+  removeCategory } = require('./controllers/CategoryController');
 const { getUsers,
-        getUser,
-        addUser,
-        updateUser,
-        removeUser } = require('./controllers/userController');
+  getUser,
+  addUser,
+  updateUser,
+  removeUser } = require('./controllers/UserController');
 const { getStories,
-        getStory,
-        addStory,
-        updateStory,
-        removeStory } = require('./controllers/storyController');
+  getStory,
+  addStory,
+  updateStory,
+  removeStory } = require('./controllers/StoryController');
 const {
   getSuggestions,
   getSuggestion,

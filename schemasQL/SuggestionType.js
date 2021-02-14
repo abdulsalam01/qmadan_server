@@ -3,7 +3,7 @@
 const { GraphQLObjectType, GraphQLID, GraphQLString } = require('graphql');
 
 const suggestionType = new GraphQLObjectType({
-    name: 'SuggestionType',
+    name: 'suggestionType',
     description: 'Suggestion form of story',
     fields: () =>  ({
         _id: { type: GraphQLID },

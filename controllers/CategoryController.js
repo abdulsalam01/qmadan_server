@@ -1,6 +1,7 @@
 'use strict';
 
 const {GraphQLList, GraphQLString, GraphQLNonNull} = require('graphql');
+const { Types } = require('mongoose');
 const model = require('../models/Category');
 
 // logic process
@@ -44,6 +45,8 @@ const _add = {
     created_by: { type: GraphQLString }
   },
   resolve: async(root, args) => {
+    args.created_by = Types.ObjectId(args.created_by);
+    //
     const _model = new model(args);
     const _newModel = await _model.save();
     //
@@ -60,6 +63,7 @@ const _update = {
     created_by: { type: GraphQLString }
   },
   resolve: async(root, args) => {
+    args.created_by = Types.ObjectId(args.created_by);
     const _model = await model.findByIdAndUpdate(args._id, args, {new: true});
     //
     return _model;
