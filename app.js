@@ -27,10 +27,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/.netlify/functions/api', graphQLHttp({
-  schema: schemaApp,
-  graphiql: true
-}));
 
 // api request
 app.use('/api', graphQLHttp({

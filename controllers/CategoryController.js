@@ -6,34 +6,52 @@ const model = require('../models/Category');
 
 // logic process
 const _getAll = {
-  type: new GraphQLList(categoryType),
+  type: baseResponse('allCategory', new GraphQLList(categoryType)),
   args: basePage,
   resolve: async(root, args) => {
+    const take = args.take ?? 10;
+    const skip = args.skip ?? 0;
+
     const _model = await model.find()
-      .skip(args.skip ?? 0)
-      .limit(args.take ?? 10)
+      .skip(skip)
+      .limit(take)
       .populate('created_by')
       .exec();
     //
-    return _model;
+    const _count = await model.find().countDocuments();
+    const _res = {take, skip, total: _count};
+
+    baseController.list = _model;
+    baseController.pages = _res;
+
+    return baseController;
   }
 }
 
 const _getById = {
-  type: categoryType,
+  type: baseResponse('oneCategory', categoryType),
   args: {
     ...basePage,
     _id: { type: GraphQLString },
   },
   resolve: async(root, args) => {
+    const take = args.take ?? 10;
+    const skip = args.skip ?? 0;
+    
     const _model = await model
       .findById(args._id)
-      .skip(args.skip ?? 0)
-      .limit(args.take ?? 10)      
+      .skip(skip)
+      .limit(take)
       .populate('created_by')
       .exec();
     //
-    return _model;
+    const _count = await model.findById(args._id).countDocuments();
+    const _res = {take, skip, total: _count};
+
+    baseController.list = _model;
+    baseController.pages = _res;
+
+    return baseController;
   }
 };
 

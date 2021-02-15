@@ -11,8 +11,7 @@ const storyType = new GraphQLObjectType({
     body: { type: GraphQLString },
     created_at: { type: GraphQLString },
     category: { type: categoryType },
-    created_by: { type: userType },
-    base: { type: baseQuery }
+    created_by: { type: userType }
   })
 });
 

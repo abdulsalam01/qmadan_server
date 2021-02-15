@@ -1,6 +1,7 @@
 'use strict';
 
-const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLScalarType} = require('graphql');
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLScalarType } = require('graphql');
+const { GraphQLJSON } = require('graphql-type-json');
 
 const scalarDate = new GraphQLScalarType({
   name: 'Date',
@@ -21,8 +22,7 @@ const categoryType = new GraphQLObjectType({
       type: scalarDate,
       resolve: () => { return new Date() }
     },
-    created_by: { type: userType },
-    page: { type: baseQuery }
+    created_by: { type: userType }
   })
 });
 

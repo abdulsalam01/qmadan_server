@@ -6,35 +6,53 @@ const model = require('../models/Story');
 
 // logic process
 const _getAll = {
-  type: new GraphQLList(storyType),
+  type: baseResponse('allStory', new GraphQLList(storyType)),
   args: basePage,
   resolve: async(root, args) => {
+    const take = args.take ?? 10;
+    const skip = args.skip ?? 0;
+
     const _model = await model.find()
+      .skip(skip)
+      .limit(take)
+      .populate('category')
+      .populate('created_by')
+      .exec();
+    //
+    const _count = await model.find().countDocuments();
+    const _res = {take, skip, total: _count};
+
+    baseController.list = _model;
+    baseController.pages = _res;
+
+    return baseController;
+  }
+}
+
+const _getById = {
+  type: baseResponse('story', storyType),
+  args: {
+    ...basePage,
+    _id: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  resolve: async(root, args) => {
+    const take = args.take ?? 10;
+    const skip = args.skip ?? 0;
+
+    const _model = await model.findById(args._id)
       .skip(args.skip ?? 0)
       .limit(args.take ?? 10)
       .populate('category')
       .populate('created_by')
       .exec();
     //
-    return _model;
-  }
-}
+    const _count = await model.findById(args._id).countDocuments();
+    const _res = {take, skip, total: _count};
 
-const _getById = {
-  type: storyType,
-  args: {
-    ...basePage,
-    _id: { type: new GraphQLNonNull(GraphQLString) }
-  },
-  resolve: async(root, args) => {
-    const _model = await model.findById(args._id)
-                  .skip(args.skip ?? 0)
-                  .limit(args.take ?? 10)
-                  .populate('category')
-                  .populate('created_by')
-                  .exec();
-    //
-    return _model;
+    baseController.list = _model;
+    baseController.pages = _res;
+
+    return baseController;
   }
 }
 
