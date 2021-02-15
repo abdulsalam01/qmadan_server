@@ -34,10 +34,10 @@ app.use('/.netlify/functions/api', graphQLHttp({
 }));
 
 // api request
-// app.use('/api', graphQLHttp({
-//   schema: schemaApp,
-//   graphiql: true
-// }))
+app.use('/api', graphQLHttp({
+  schema: schemaApp,
+  graphiql: true
+}))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
