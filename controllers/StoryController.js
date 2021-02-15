@@ -2,7 +2,7 @@
 
 const {GraphQLList, GraphQLString, GraphQLNonNull} = require('graphql');
 const { Types } = require('mongoose');
-const model = require('../models/story');
+const model = require('../models/Story');
 
 // logic process
 const _getAll = {

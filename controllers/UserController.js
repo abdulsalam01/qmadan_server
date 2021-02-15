@@ -1,7 +1,7 @@
 'use strict';
 
 const { GraphQLObjectType, GraphQLList, GraphQLString, GraphQLNonNull } = require('graphql');
-const model = require('../models/user');
+const model = require('../models/User');
 
 // logic process
 const _getAll = {
