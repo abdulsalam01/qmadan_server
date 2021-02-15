@@ -2,9 +2,10 @@
 
 const mongoose = require('mongoose');
 const dbName = 'Qmadan_db';
-const isOffline = true;
+const isOffline = false;
 //
-const uri = isOffline ? `mongodb://localhost:27017/${dbName}` : 'mongodb://192.168.1.100/dbOn';
+const uri = isOffline ? `mongodb://localhost:27017/${dbName}` : 
+  `mongodb+srv://devops786:devops786@cluster0.4hdsq.mongodb.net/Qmadan_db?retryWrites=true&w=majority`;
 let db;
 
 // connect to mongodb
