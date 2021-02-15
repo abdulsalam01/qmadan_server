@@ -8,7 +8,7 @@ require('../config/connection');
 
 // schemas of graphql app - call once as global var
 global.userType = require('../schemasQL/UserType');
-global.categoryType = require('../schemasQL/categoryType');
+global.categoryType = require('../schemasQL/CategoryType');
 global.storyType = require('../schemasQL/StoryType');
 global.suggestionType = require('../schemasQL/SuggestionType');
 global.baseQuery = require('../schemasQL/BaseQuery');
