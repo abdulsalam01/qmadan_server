@@ -4,7 +4,7 @@
   "description": "Example of how to deploy a Express.js Netlify app.",
   "main": "app.js",
   "scripts": {
-    "build": "./node_modules/.bin/netlify-lambda build .",
+    "build": "./node_modules/.bin/netlify-lambda build ./bin",
     "start": "npx nodemon ./bin/www"
   },
   "repository": {
