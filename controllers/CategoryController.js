@@ -2,9 +2,29 @@
 
 const {GraphQLList, GraphQLString, GraphQLNonNull} = require('graphql');
 const { Types } = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 const model = require('../models/Category');
+const { GraphQLUpload } = require('graphql-upload');
 
 // logic process
+const _uploadFile = ({stream, filename}) => {
+  const uploadDir = `../uploads`;
+  const locationFile = path.join(__dirname, `${uploadDir}/${filename}`);
+
+  return new Promise((resolve, reject) => {
+    stream.on('error', err => {
+        // delete the truncated file
+        if (stream.truncated) fs.unlinkSync(locationFile);
+        
+        reject(err);
+      })
+      .pipe(fs.createWriteStream(locationFile))
+      .on('error', err => reject(err))
+      .on('finish', () => resolve({ locationFile }));
+  });
+}
+
 const _getAll = {
   type: baseResponse('allCategory', new GraphQLList(categoryType)),
   args: basePage,
@@ -59,12 +79,15 @@ const _add = {
   type: categoryType,
   args: {
     title: { type: GraphQLString },
-    logo: { type: GraphQLString },
+    logo: { type: GraphQLUpload },
     created_by: { type: GraphQLString }
   },
   resolve: async(root, args) => {
     args.created_by = Types.ObjectId(args.created_by);
     //
+    const { filename, mimetype, createReadStream } = await args.logo;
+    const stream = createReadStream();
+    const pathObject = await _uploadFile({stream, filename});
     const _model = new model(args);
     const _newModel = await _model.save();
     //

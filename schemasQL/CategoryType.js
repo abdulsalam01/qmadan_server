@@ -1,7 +1,7 @@
 'use strict';
 
 const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLScalarType } = require('graphql');
-const { GraphQLJSON } = require('graphql-type-json');
+const { GraphQLUpload } = require('graphql-upload');
 
 const scalarDate = new GraphQLScalarType({
   name: 'Date',
@@ -17,7 +17,14 @@ const categoryType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLID },
     title: { type: GraphQLString },
-    logo: { type: GraphQLString },
+    logo: { 
+      type: GraphQLUpload,
+      // resolve: async (root, {image}) => {
+      //   const { filename, mimetype, createReadStream } = await image;
+      //   const stream = createReadStream();
+      //   return stream;
+      // }
+    },
     create_at: {
       type: scalarDate,
       resolve: () => { return new Date() }

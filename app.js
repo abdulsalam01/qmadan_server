@@ -1,4 +1,5 @@
 //
+const { graphqlUploadExpress } = require('graphql-upload');
 const graphQLHttp = require('express-graphql');
 
 var createError = require('http-errors');
@@ -25,14 +26,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
 // api request
-app.use('/api', graphQLHttp({
-  schema: schemaApp,
-  graphiql: true
-}))
+app.use('/api', graphqlUploadExpress({maxFileSize: 10000000, maxFiles: 10}),
+  graphQLHttp({
+    schema: schemaApp,
+    graphiql: true,
+  })
+)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
