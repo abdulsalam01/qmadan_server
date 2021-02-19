@@ -17,14 +17,7 @@ const categoryType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLID },
     title: { type: GraphQLString },
-    logo: { 
-      type: GraphQLUpload,
-      // resolve: async (root, {image}) => {
-      //   const { filename, mimetype, createReadStream } = await image;
-      //   const stream = createReadStream();
-      //   return stream;
-      // }
-    },
+    logo: { type: GraphQLUpload },
     create_at: {
       type: scalarDate,
       resolve: () => { return new Date() }

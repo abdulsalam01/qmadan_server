@@ -1,6 +1,6 @@
 'use strict';
 
-const {GraphQLList, GraphQLString, GraphQLNonNull} = require('graphql');
+const { GraphQLList, GraphQLString, GraphQLNonNull } = require('graphql');
 const model = require('../models/Suggestion');
 
 const _getAll = {

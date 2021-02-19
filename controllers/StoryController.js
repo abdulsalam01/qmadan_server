@@ -1,6 +1,7 @@
 'use strict';
 
-const {GraphQLList, GraphQLString, GraphQLNonNull} = require('graphql');
+const { GraphQLList, GraphQLString, GraphQLNonNull } = require('graphql');
+const { GraphQLUpload } = require('graphql-upload');
 const { Types } = require('mongoose');
 const model = require('../models/Story');
 
@@ -61,16 +62,23 @@ const _add = {
   args: {
     title: { type: GraphQLString },
     body: { type: GraphQLString },
+    image: { type: GraphQLUpload },
     category: { type: GraphQLString },
     created_by: { type: GraphQLString }
   },
   resolve: async(root, args) => {
-    args.created_by = Types.ObjectId(args.created_by);
-    //
-    const _model = new model(args);
-    const _newModel = await _model.save();
-    //
-    return _newModel;
+    return baseProccessController(async() => {
+      const { filename, mimetype, createReadStream } = await args.image;
+      const stream = createReadStream();
+      const file = await baseUploadController({stream, filename}, 'stories');
+
+      args.created_by = Types.ObjectId(args.created_by);
+      args.image = file.locationFile;
+      const _model = new model(args);
+      const _newModel = await _model.save();
+      //
+      return _newModel;
+    });
   }
 }
 
@@ -98,9 +106,12 @@ const _delete = {
     _id: { type: GraphQLString }
   },
   resolve: async(root, args) => {
-    const _model = model.findByIdAndRemove(args._id);
-    //
-    return _model;
+    return baseProccessController(async() => {
+      const _model = model.findByIdAndRemove(args._id);
+
+      baseRemoveController(_model.image);
+      return _model;
+    });
   }
 }
 
