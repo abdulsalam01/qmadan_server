@@ -31,7 +31,7 @@ const _getAll = {
 }
 
 const _getById = {
-  type: baseResponse('story', storyType),
+  type: baseResponse('story', new GraphQLList(storyType)),
   args: {
     ...basePage,
     _id: { type: GraphQLString },
@@ -41,7 +41,7 @@ const _getById = {
     const take = args.take ?? 10;
     const skip = args.skip ?? 0;
 
-    const _model = await model.find()
+    const _model = await model.find({})
       .skip(skip)
       .limit(take)
       .populate({
@@ -51,7 +51,13 @@ const _getById = {
       .populate('created_by')
       .exec();
     //
-    const _count = await model.findById(args._id).countDocuments();
+    const _count = await model.find()
+      .populate({
+        path: 'category',
+        match: { _id: Types.ObjectId(args.category) }
+      })
+      .countDocuments();
+    
     const _res = {take, skip, total: _count};
 
     baseController.list = _model;

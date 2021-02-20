@@ -33,6 +33,7 @@ app.use('/api', graphqlUploadExpress({maxFileSize: 10000000, maxFiles: 10}),
     graphiql: true,
   })
 )
+app.use(express.static('uploads'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

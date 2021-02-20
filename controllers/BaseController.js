@@ -19,12 +19,21 @@ module.exports = baseUploadController = ({stream, filename}, spesificDir = ``) =
       })
       .pipe(fs.createWriteStream(locationFile))
       .on('error', err => reject(err))
-      .on('finish', () => resolve({ locationFile }));
+      .on('finish', () => {
+        const fileName = locationFile.split('/')[locationFile.split('/').length - 1];
+        const joinDir = `${uploadDir}/${fileName}`.split('/').filter((n, i) => i > 1).join('/');
+
+        resolve({ locationFile: joinDir })
+      });
   });
 }
 
 module.exports = baseRemoveController = (filename) => {
-  fs.unlink(filename, (err) => {
+  const uploadDir = `../uploads`;
+  const location = path.join(__dirname, `${uploadDir}`);
+  const locationFile = `${location}/${filename}`;
+
+  fs.unlink(locationFile, (err) => {
     if (err) throw err;
 
     return true;
