@@ -13,11 +13,7 @@ const scalarDate = new GraphQLScalarType({
 
 const scalarUrl = new GraphQLScalarType({
   name: 'UrlResolver',
-  serialize: (value) => {
-    const host = url.host;
-    //
-    return `${host}/${value}`;
-  },
+  serialize: (value) => `${baseUrl}/${value}`,
   parseValue: (value) => value
 })
 

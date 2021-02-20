@@ -7,10 +7,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
 
 // call graphql process
@@ -25,6 +21,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('uploads'));
+
+// base url getter
+app.use((req, res, next) => {
+  baseUrl = req.headers.host;
+  next();
+});
 
 // api request
 app.use('/api', graphqlUploadExpress({maxFileSize: 10000000, maxFiles: 10}),
@@ -33,7 +36,6 @@ app.use('/api', graphqlUploadExpress({maxFileSize: 10000000, maxFiles: 10}),
     graphiql: true,
   })
 )
-app.use(express.static('uploads'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
