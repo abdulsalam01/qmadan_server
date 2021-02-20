@@ -17,7 +17,9 @@ const categoryType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLID },
     title: { type: GraphQLString },
-    logo: { type: GraphQLUpload },
+    logo: { 
+      type: GraphQLString
+    },
     create_at: {
       type: scalarDate,
       resolve: () => { return new Date() }

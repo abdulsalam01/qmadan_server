@@ -34,16 +34,20 @@ const _getById = {
   type: baseResponse('story', storyType),
   args: {
     ...basePage,
-    _id: { type: new GraphQLNonNull(GraphQLString) }
+    _id: { type: GraphQLString },
+    category: { type: new GraphQLNonNull(GraphQLString) }
   },
   resolve: async(root, args) => {
     const take = args.take ?? 10;
     const skip = args.skip ?? 0;
 
-    const _model = await model.findById(args._id)
-      .skip(args.skip ?? 0)
-      .limit(args.take ?? 10)
-      .populate('category')
+    const _model = await model.find()
+      .skip(skip)
+      .limit(take)
+      .populate({
+        path: 'category',
+        match: { _id: Types.ObjectId(args.category) }
+      })
       .populate('created_by')
       .exec();
     //
