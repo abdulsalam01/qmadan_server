@@ -17,7 +17,7 @@ global.baseRes = require('../schemasQL/BaseResponse');
 global.basePage = require('../models/BaseQuery');
 // controller - of base response
 global.baseController = require('../controllers/BaseController');
-// global base url
+// global - base url
 global.baseUrl = undefined;
 
 var app = require('../app');
