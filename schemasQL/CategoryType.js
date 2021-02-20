@@ -9,10 +9,7 @@ const categoryType = new GraphQLObjectType({
     _id: { type: GraphQLID },
     title: { type: GraphQLString },
     logo: { type: baseRes.baseScalarUrl },
-    create_at: {
-      type: baseRes.baseScalarDate,
-      resolve: (val) => { return new Date(val) }
-    },
+    created_at: { type: baseRes.baseScalarDate },
     created_by: { type: userType }
   })
 });

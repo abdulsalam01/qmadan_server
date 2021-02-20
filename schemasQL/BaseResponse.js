@@ -14,7 +14,7 @@ const baseResponse = (name, type) => new GraphQLObjectType({
 const baseScalarDate = new GraphQLScalarType({
   name: 'Date',
   serialize: (value) => {
-    return value.getTime();
+    return new Date(value.getTime()).toISOString();
   },
   parseValue: (value) => { return new Date(value); }
 });
