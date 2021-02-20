@@ -7,7 +7,7 @@ const model = require('../models/Category');
 
 // logic process
 const _getAll = {
-  type: baseResponse('allCategory', new GraphQLList(categoryType)),
+  type: baseRes.baseResponse('allCategory', new GraphQLList(categoryType)),
   args: basePage,
   resolve: async(root, args) => {
     const take = args.take ?? 10;
@@ -30,7 +30,7 @@ const _getAll = {
 }
 
 const _getById = {
-  type: baseResponse('oneCategory', categoryType),
+  type: baseRes.baseResponse('oneCategory', categoryType),
   args: {
     ...basePage,
     _id: { type: GraphQLString },

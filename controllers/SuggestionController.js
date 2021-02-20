@@ -4,7 +4,7 @@ const { GraphQLList, GraphQLString, GraphQLNonNull } = require('graphql');
 const model = require('../models/Suggestion');
 
 const _getAll = {
-    type: baseResponse('allSuggestion', new GraphQLList(suggestionType)),
+    type: baseRes.baseResponse('allSuggestion', new GraphQLList(suggestionType)),
     args: basePage, 
     resolve: async(root, args) => { 
       const take = args.take ?? 10;
@@ -27,7 +27,7 @@ const _getAll = {
 }
 
 const _getById = {
-    type: baseResponse('suggestion', suggestionType), 
+    type: baseRes.baseResponse('suggestion', suggestionType), 
     args: {...basePage, _id: { type: GraphQLString } },
     resolve: async(root, args) => { 
       const take = args.take ?? 10;

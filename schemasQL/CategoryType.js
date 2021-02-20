@@ -1,21 +1,6 @@
 'use strict';
 
 const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLScalarType } = require('graphql');
-const url = require('url');
-
-const scalarDate = new GraphQLScalarType({
-  name: 'Date',
-  serialize: (value) => {
-    return value.getTime();
-  },
-  parseValue: (value) => { return new Date(value); }
-});
-
-const scalarUrl = new GraphQLScalarType({
-  name: 'UrlResolver',
-  serialize: (value) => `${baseUrl}/${value}`,
-  parseValue: (value) => value
-})
 
 const categoryType = new GraphQLObjectType({
   name: 'categoryType',
@@ -23,11 +8,9 @@ const categoryType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLID },
     title: { type: GraphQLString },
-    logo: { 
-      type: scalarUrl
-    },
+    logo: { type: baseRes.baseScalarUrl },
     create_at: {
-      type: scalarDate,
+      type: baseRes.baseScalarDate,
       resolve: (val) => { return new Date(val) }
     },
     created_by: { type: userType }

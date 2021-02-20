@@ -1,5 +1,5 @@
 'use strict';
-const { GraphQLObjectType } = require('graphql');
+const { GraphQLObjectType, GraphQLScalarType } = require('graphql');
 const { GraphQLJSON } = require('graphql-type-json');
 
 const baseResponse = (name, type) => new GraphQLObjectType({
@@ -11,4 +11,22 @@ const baseResponse = (name, type) => new GraphQLObjectType({
   })
 });
 
-module.exports = baseResponse;
+const baseScalarDate = new GraphQLScalarType({
+  name: 'Date',
+  serialize: (value) => {
+    return value.getTime();
+  },
+  parseValue: (value) => { return new Date(value); }
+});
+
+const baseScalarUrl = new GraphQLScalarType({
+  name: 'UrlResolver',
+  serialize: (value) => `${baseUrl}/${value}`,
+  parseValue: (value) => value
+});
+
+module.exports = {
+  baseResponse,
+  baseScalarDate,
+  baseScalarUrl
+}

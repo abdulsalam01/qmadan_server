@@ -25,7 +25,7 @@ app.use(express.static('uploads'));
 
 // base url getter
 app.use((req, res, next) => {
-  baseUrl = req.headers.host;
+  baseUrl = req.headers.origin;
   next();
 });
 
