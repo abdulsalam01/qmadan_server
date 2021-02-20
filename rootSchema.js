@@ -5,7 +5,7 @@ const { getCategories,
   getCategory,
   addCategory,
   updateCategory,
-  removeCategory } = require('./controllers/CategoryController');
+  removeCategory } = require('./controllers/categoryController');
 const { getUsers,
   getUser,
   addUser,
