@@ -1,7 +1,6 @@
 'use strict';
 
 const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLScalarType } = require('graphql');
-const { GraphQLUpload } = require('graphql-upload');
 
 const scalarDate = new GraphQLScalarType({
   name: 'Date',
