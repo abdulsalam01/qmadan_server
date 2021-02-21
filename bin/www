@@ -11,6 +11,7 @@ global.userType = require('../schemasQL/UserType');
 global.categoryType = require('../schemasQL/CategoryType');
 global.storyType = require('../schemasQL/StoryType');
 global.suggestionType = require('../schemasQL/SuggestionType');
+global.sliderType = require('../schemasQL/SliderType');
 global.baseRes = require('../schemasQL/BaseResponse');
 
 // global models - pages

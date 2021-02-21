@@ -23,6 +23,13 @@ const {
   updateSuggestion,
   removeSuggestion
 } = require('./controllers/SuggestionController');
+const {
+  getSliders,
+  getSlider,
+  addSlider,
+  updateSlider,
+  removeSlider
+} = require('./controllers/SliderController');
 
 const appSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -36,6 +43,8 @@ const appSchema = new GraphQLSchema({
       story: getStory,
       suggestions: getSuggestions,
       suggestion: getSuggestion,
+      sliders: getSliders,
+      slider: getSlider      
     })
   }),
   mutation: new GraphQLObjectType({
@@ -52,7 +61,10 @@ const appSchema = new GraphQLSchema({
       removeStory: removeStory,
       addSuggetion,
       updateSuggestion,
-      removeSuggestion
+      removeSuggestion,
+      addSlider,
+      updateSlider,
+      removeSlider
     }
   })
 });
