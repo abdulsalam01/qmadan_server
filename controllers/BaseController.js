@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = baseResponseController = {list: {}, pages: {}};
+module.exports = baseResponseController = {list: {}, pages: {}, extras: {}};
 module.exports = baseUploadController = ({stream, filename}, spesificDir = ``) => {
   const uploadDir = `../uploads/${spesificDir}`;
   const location = path.join(__dirname, `${uploadDir}`);

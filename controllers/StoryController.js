@@ -5,6 +5,13 @@ const { GraphQLUpload } = require('graphql-upload');
 const { Types } = require('mongoose');
 const model = require('../models/Story');
 
+// list for musics - mp3 format
+const _musicsList = [
+  'mp3',
+  'mp4',
+  'mp5'
+];
+
 // logic process
 const _getAll = {
   type: baseRes.baseResponse('allStory', new GraphQLList(storyType)),
@@ -25,12 +32,13 @@ const _getAll = {
 
     baseController.list = _model;
     baseController.pages = _res;
+    baseController.extras = _musicsList;
 
     return baseController;
   }
 }
 
-const _getById = {
+const _getByCategory = {
   type: baseRes.baseResponse('story', new GraphQLList(storyType)),
   args: {
     ...basePage,
@@ -62,6 +70,36 @@ const _getById = {
 
     baseController.list = _model;
     baseController.pages = _res;
+    baseController.extras = _musicsList;
+
+    return baseController;
+  }
+}
+
+const _getById = {
+  type: baseRes.baseResponse('storyById', storyType),
+  args: {
+    ...basePage,
+    _id: { type: new GraphQLNonNull(GraphQLString) },
+  },
+  resolve: async(root, args) => {
+    const take = args.take ?? 10;
+    const skip = args.skip ?? 0;
+
+    const _model = await model.findById(args._id)
+      .populate('category')
+      .populate('created_by')
+      .exec();
+    //
+    const _count = await model.findById(args._id)
+      .populate('category')
+      .countDocuments();
+    
+    const _res = {take, skip, total: _count};
+
+    baseController.list = _model;
+    baseController.pages = _res;
+    baseController.extras = _musicsList[Math.floor(Math.random() * _musicsList.length)];
 
     return baseController;
   }
@@ -127,6 +165,7 @@ const _delete = {
 
 module.exports = {
   getStories: _getAll,
+  getStoryByCategory: _getByCategory,
   getStory: _getById,
   addStory: _add,
   updateStory: _update,

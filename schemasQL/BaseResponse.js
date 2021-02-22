@@ -7,7 +7,8 @@ const baseResponse = (name, type) => new GraphQLObjectType({
   description: 'baseResponse',
   fields: () => ({
     list: { type },
-    pages: { type: GraphQLJSON }
+    pages: { type: GraphQLJSON },
+    extras: {type: GraphQLJSON }
   })
 });
 
