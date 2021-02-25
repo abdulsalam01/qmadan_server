@@ -51,3 +51,18 @@ module.exports = baseProccessController = async (proc, session) => {
 
   return res;
 }
+
+module.exports = baseReadDirController = async (base = baseUrl, dirName) => {
+  const dirResolver = `../uploads/${dirName}/`;
+  const res = await fs.promises.readdir(path.join(__dirname, dirResolver))
+    .then(files => {
+        return files.map(file => {
+          return `${base}/${dirName}/${file}`;
+        });
+      }
+    ).catch(err => {
+      if (err) throw err;
+    });
+
+  return res;
+}

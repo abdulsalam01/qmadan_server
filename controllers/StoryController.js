@@ -5,13 +5,6 @@ const { GraphQLUpload } = require('graphql-upload');
 const { Types } = require('mongoose');
 const model = require('../models/Story');
 
-// list for musics - mp3 format
-const _musicsList = [
-  'mp3',
-  'mp4',
-  'mp5'
-];
-
 // logic process
 const _getAll = {
   type: baseRes.baseResponse('allStory', new GraphQLList(storyType)),
@@ -29,6 +22,7 @@ const _getAll = {
     //
     const _count = await model.find().countDocuments();
     const _res = {take, skip, total: _count};
+    const _musicsList = await baseReadDirController(baseUrl, `mp3s`);
 
     baseController.list = _model;
     baseController.pages = _res;
@@ -67,6 +61,7 @@ const _getByCategory = {
       .countDocuments();
     
     const _res = {take, skip, total: _count};
+    const _musicsList = await baseReadDirController(baseUrl, `mp3s`);
 
     baseController.list = _model;
     baseController.pages = _res;
@@ -94,8 +89,8 @@ const _getById = {
     const _count = await model.findById(args._id)
       .populate('category')
       .countDocuments();
-    
     const _res = {take, skip, total: _count};
+    const _musicsList = await baseReadDirController(baseUrl, `mp3s`);
 
     baseController.list = _model;
     baseController.pages = _res;
