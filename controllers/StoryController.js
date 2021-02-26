@@ -43,13 +43,10 @@ const _getByCategory = {
     const take = args.take ?? 10;
     const skip = args.skip ?? 0;
 
-    const _model = await model.find({})
+    const _model = await model.find({category: args.category})
       .skip(skip)
       .limit(take)
-      .populate({
-        path: 'category',
-        match: { _id: Types.ObjectId(args.category) }
-      })
+      .populate('category')
       .populate('created_by')
       .exec();
     //
