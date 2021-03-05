@@ -29,6 +29,6 @@ const storySchema = mongoose.Schema({
   }
 }, {collection: 'stories'});
 
-storySchema.index({ title: 'text' });
+storySchema.index({ title: 'text', body: 'text' });
 
 module.exports = mongoose.model('Story', storySchema);

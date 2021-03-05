@@ -101,12 +101,12 @@ const _getByTitle = {
   type: baseRes.baseResponse('storyByTitle', new GraphQLList(storyType)),
   args: {
     ...basePage,
-    title: { type: GraphQLString },
+    query: { type: GraphQLString },
   },
   resolve: async(root, args) => {
     const limit = 5;
     const _res = {total: limit};
-    const _model = await model.find({ $text: { $search: args.title } })
+    const _model = await model.find({ $text: { $search: args.query } })
       .populate('category')
       .populate('created_by')
       .limit(limit)
