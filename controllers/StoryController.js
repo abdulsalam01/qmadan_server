@@ -97,6 +97,28 @@ const _getById = {
   }
 }
 
+const _getByTitle = {
+  type: baseRes.baseResponse('storyByTitle', new GraphQLList(storyType)),
+  args: {
+    ...basePage,
+    title: { type: GraphQLString },
+  },
+  resolve: async(root, args) => {
+    const limit = 5;
+    const _res = {total: limit};
+    const _model = await model.find({ $text: { $search: args.title } })
+      .populate('category')
+      .populate('created_by')
+      .limit(limit)
+      .exec();
+    //
+    baseController.list = _model;
+    baseController.pages = _res;
+
+    return baseController;
+  }
+}
+
 const _add = {
   type: storyType,
   args: {
@@ -158,6 +180,7 @@ const _delete = {
 module.exports = {
   getStories: _getAll,
   getStoryByCategory: _getByCategory,
+  getStoryByTitle: _getByTitle,
   getStory: _getById,
   addStory: _add,
   updateStory: _update,
