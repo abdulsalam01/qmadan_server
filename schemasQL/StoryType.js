@@ -9,7 +9,8 @@ const storyType = new GraphQLObjectType({
     _id: { type: GraphQLID },
     title: { type: GraphQLString },
     body: { type: GraphQLString },
-    image: { type: baseRes.baseScalarUrl },
+    file: { type: baseRes.baseScalarUrl },
+    type: { type: GraphQLString },
     created_at: { type: baseRes.baseScalarDate },
     category: { type: categoryType },
     created_by: { type: userType }

@@ -23,6 +23,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('uploads'));
 
+const root = {
+  hello: 'Hello world!'
+}
+
 // base url getter
 app.use((req, res, next) => {
   baseUrl = true ? req.headers.host : req.headers.origin;
@@ -30,10 +34,11 @@ app.use((req, res, next) => {
 });
 
 // api request
-app.use('/api', graphqlUploadExpress({maxFileSize: 10000000, maxFiles: 10}),
+app.use('/api', graphqlUploadExpress({maxFileSize: 10000000, maxFiles: 3}),
   graphQLHttp({
     schema: schemaApp,
     graphiql: true,
+    rootValue: root
   })
 );
 

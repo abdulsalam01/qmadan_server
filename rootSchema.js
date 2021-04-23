@@ -16,6 +16,7 @@ const { getStories,
   getStoryByTitle,
   getStory,
   addStory,
+  addToCloud,
   updateStory,
   removeStory } = require('./controllers/StoryController');
 const {
@@ -68,7 +69,9 @@ const appSchema = new GraphQLSchema({
       removeSuggestion,
       addSlider,
       updateSlider,
-      removeSlider
+      removeSlider,
+      // firebase-bucket
+      addToCloud
     }
   })
 });

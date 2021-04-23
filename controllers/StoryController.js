@@ -124,22 +124,46 @@ const _add = {
   args: {
     title: { type: GraphQLString },
     body: { type: GraphQLString },
-    image: { type: GraphQLUpload },
+    file: { type: GraphQLUpload },
     category: { type: GraphQLString },
     created_by: { type: GraphQLString }
   },
   resolve: async(root, args) => {
     return baseProccessController(async() => {
-      const { filename, mimetype, createReadStream } = await args.image;
+      const { filename, mimetype, createReadStream } = await args.file;
       const stream = createReadStream();
       const file = await baseUploadController({stream, filename}, 'stories');
 
       args.created_by = Types.ObjectId(args.created_by);
-      args.image = file.locationFile;
+      args.file = file.locationFile;
       const _model = new model(args);
       const _newModel = await _model.save();
       //
       return _newModel;
+    });
+  }
+}
+
+// firebase upload
+const _addToCloud = {
+  type: storyType,
+  args: {
+    title: { type: GraphQLString },
+    body: { type: GraphQLString },
+    file: { type: GraphQLUpload },
+    category: { type: GraphQLString },
+    created_by: { type: GraphQLString }
+  },
+  resolve: async(root, args) => {
+    return baseProccessController(async() => {
+      const { filename, mimetype, createReadStream } = await args.file;
+
+      const stream = createReadStream();
+      const file = await baseUploadController({stream, filename}, 'stories');
+      const firebase = await baseCloudUploadController(file.locationFile, 'stories');
+      const remove = await baseRemoveController(file.locationFile);
+      //
+      return firebase;
     });
   }
 }
@@ -171,7 +195,7 @@ const _delete = {
     return baseProccessController(async() => {
       const _model = model.findByIdAndRemove(args._id);
 
-      baseRemoveController(_model.image);
+      baseRemoveController(_model.file);
       return _model;
     });
   }
@@ -183,6 +207,7 @@ module.exports = {
   getStoryByTitle: _getByTitle,
   getStory: _getById,
   addStory: _add,
+  addToCloud: _addToCloud,
   updateStory: _update,
   removeStory: _delete
 }

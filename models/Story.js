@@ -14,8 +14,13 @@ const storySchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  'image': {
+  'file': {
     type: String
+  },
+  'type': {
+    type: String,
+    enum: ['video', 'image', 'document', 'other'],
+    default: 'image'
   },
   'category': {
     type: mongoose.Schema.Types.ObjectId,

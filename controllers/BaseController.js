@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const firebase = require('../config/firebase');
 
 module.exports = baseResponseController = {list: {}, pages: {}, extras: {}};
 module.exports = baseUploadController = ({stream, filename}, spesificDir = ``) => {
@@ -26,6 +27,28 @@ module.exports = baseUploadController = ({stream, filename}, spesificDir = ``) =
         resolve({ locationFile: joinDir })
       });
   });
+}
+
+// firebase-cloud-storage
+module.exports = baseCloudUploadController = async(file, spesificDir = '') => {
+  const uploadDir = `../uploads`;
+  const fileName = path.join(__dirname, `${uploadDir}/${file}`)
+    .slice(7)
+    .replace('\\/', '/');
+
+  const bucketName = firebase.bucket;
+  const uploadFirebase = await firebase.storage
+    .bucket(bucketName)
+    .upload(`c:/${fileName}`, {
+      destination: spesificDir,
+      gzip: true,
+      metadata: { 
+        contentType: file.mimetype,
+        firebaseStorageDownloadTokens: new Date().getTime()
+      }
+    });
+
+  return uploadFirebase
 }
 
 module.exports = baseRemoveController = (filename) => {
