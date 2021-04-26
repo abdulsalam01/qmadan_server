@@ -22,7 +22,8 @@ const baseScalarDate = new GraphQLScalarType({
 
 const baseScalarUrl = new GraphQLScalarType({
   name: 'UrlResolver',
-  serialize: (value) => `${baseUrl}/${value}`,
+  // serialize: (value) => `${baseUrl}/${value}`,
+  serialize: (value) => `${value}`,
   parseValue: (value) => value
 });
 

@@ -5,7 +5,9 @@ const { getCategories,
   getCategory,
   addCategory,
   updateCategory,
-  removeCategory } = require('./controllers/CategoryController');
+  removeCategory,
+  addCategoryToCloud,
+  removeCategoryFromCloud } = require('./controllers/CategoryController');
 const { getUsers,
   getUser,
   addUser,
@@ -16,9 +18,10 @@ const { getStories,
   getStoryByTitle,
   getStory,
   addStory,
-  addToCloud,
+  addStoryToCloud,
   updateStory,
-  removeStory } = require('./controllers/StoryController');
+  removeStory,
+  removeStoryFromCloud } = require('./controllers/StoryController');
 const {
   getSuggestions,
   getSuggestion,
@@ -70,8 +73,11 @@ const appSchema = new GraphQLSchema({
       addSlider,
       updateSlider,
       removeSlider,
-      // firebase-bucket
-      addToCloud
+      // firebase-bucket-uploader
+      addStoryToCloud,
+      removeStoryFromCloud,
+      addCategoryToCloud,
+      removeCategoryFromCloud
     }
   })
 });

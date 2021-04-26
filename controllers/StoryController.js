@@ -19,12 +19,18 @@ const _getAll = {
       .populate('category')
       .populate('created_by')
       .exec();
+
+    // re-init the file download
+    const _newModel = _model.map(async(n) => {
+      n.file = await baseCloudGenerateLinkController(n.file);
+      return n;
+    });
     //
     const _count = await model.find().countDocuments();
     const _res = {take, skip, total: _count};
     const _musicsList = await baseReadDirController(baseUrl, `mp3s`);
 
-    baseController.list = _model;
+    baseController.list = _newModel;
     baseController.pages = _res;
     baseController.extras = _musicsList;
 
@@ -49,6 +55,12 @@ const _getByCategory = {
       .populate('category')
       .populate('created_by')
       .exec();
+    
+    // re-init the file download
+    const _newModel = _model.map(async(n) => {
+      n.file = await baseCloudGenerateLinkController(n.file);
+      return n;
+    });
     //
     const _count = await model.find()
       .populate({
@@ -60,7 +72,7 @@ const _getByCategory = {
     const _res = {take, skip, total: _count};
     const _musicsList = await baseReadDirController(baseUrl, `mp3s`);
 
-    baseController.list = _model;
+    baseController.list = _newModel;
     baseController.pages = _res;
     baseController.extras = _musicsList;
 
@@ -82,6 +94,9 @@ const _getById = {
       .populate('category')
       .populate('created_by')
       .exec();
+    
+    // re-init the file download
+    _model.file = await baseCloudGenerateLinkController(_model.file);
     //
     const _count = await model.findById(args._id)
       .populate('category')
@@ -111,8 +126,14 @@ const _getByTitle = {
       .populate('created_by')
       .limit(limit)
       .exec();
+    
+    // re-init the file download
+    const _newModel = _model.map(async(n) => {
+      n.file = await baseCloudGenerateLinkController(n.file);
+      return n;
+    });
     //
-    baseController.list = _model;
+    baseController.list = _newModel;
     baseController.pages = _res;
 
     return baseController;
@@ -161,9 +182,13 @@ const _addToCloud = {
       const stream = createReadStream();
       const file = await baseUploadController({stream, filename}, 'stories');
       const firebase = await baseCloudUploadController(file.locationFile, 'stories');
-      const remove = await baseRemoveController(file.locationFile);
       //
-      return firebase;
+      args.created_by = Types.ObjectId(args.created_by);
+      args.file = file.locationFile;
+      const _model = new model(args);
+      const _newModel = await _model.save();
+      //
+      return _newModel;
     });
   }
 }
@@ -201,13 +226,30 @@ const _delete = {
   }
 }
 
+const _deleteFromCloud = {
+  type: storyType,
+  args: {
+    _id: { type: GraphQLString }
+  },
+  resolve: async(root, args) => {
+    return baseProccessController(async() => {
+      const _model = await model.findByIdAndRemove(args._id);
+      // remove from cloud
+      const firebase = await baseCloudRemoveController(_model.file);
+
+      return _model;
+    })
+  }
+}
+
 module.exports = {
   getStories: _getAll,
   getStoryByCategory: _getByCategory,
   getStoryByTitle: _getByTitle,
   getStory: _getById,
   addStory: _add,
-  addToCloud: _addToCloud,
+  addStoryToCloud: _addToCloud,
   updateStory: _update,
-  removeStory: _delete
+  removeStory: _delete,
+  removeStoryFromCloud: _deleteFromCloud
 }

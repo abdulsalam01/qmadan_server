@@ -32,24 +32,60 @@ module.exports = baseUploadController = ({stream, filename}, spesificDir = ``) =
 // firebase-cloud-storage
 module.exports = baseCloudUploadController = async(file, spesificDir = '') => {
   const uploadDir = `../uploads`;
-  const fileName = path.join(__dirname, `${uploadDir}/${file}`)
-    .slice(7)
-    .replace('\\/', '/');
+  const fileName = path.join(__dirname, `${uploadDir}/${file}`);
 
   const bucketName = firebase.bucket;
   const uploadFirebase = await firebase.storage
     .bucket(bucketName)
-    .upload(`c:/${fileName}`, {
-      destination: spesificDir,
+    .upload(`${fileName}`, {
+      destination: file,
       gzip: true,
-      metadata: { 
-        contentType: file.mimetype,
-        firebaseStorageDownloadTokens: new Date().getTime()
+      metadata: {
+        metadata: {
+          contentType: file.mimetype,
+          firebaseStorageDownloadTokens: new Date().getTime()
+        }
       }
+    }, (err, res) => {
+      if (err) throw err;
+      // remove the files from local
+      baseRemoveController(file)
     });
 
   return uploadFirebase
 }
+
+module.exports = baseCloudGenerateLinkController = async(file) => {
+  const todayDate = new Date();
+  const expireDate = new Date(todayDate.setMonth(todayDate.getMonth() + 1));
+
+  const bucketName = firebase.bucket;
+  const retriveImage = await firebase.storage
+    .bucket(bucketName).file(file)
+    .getSignedUrl({
+      action: 'read',
+      expires: expireDate
+    })
+    .then(res => res[0])
+    .catch(err => err);
+  
+  return retriveImage;
+}
+
+module.exports = baseCloudRemoveController = async(file) => {
+  const bucketName = firebase.bucket;
+  console.log(file);
+  const deleteImage = await firebase.storage
+    .bucket(bucketName)
+    .file(file)
+    .delete()
+    .then(res => res)
+    .catch(err => err);
+
+  return deleteImage;
+}
+
+// end: firebase-cloud-storage
 
 module.exports = baseRemoveController = (filename) => {
   const uploadDir = `../uploads`;
