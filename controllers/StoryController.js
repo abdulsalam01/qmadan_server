@@ -18,6 +18,7 @@ const _getAll = {
       .limit(take)
       .populate('category')
       .populate('created_by')
+      .sort({'created_at': -1})
       .exec();
 
     // re-init the file download
@@ -54,6 +55,7 @@ const _getByCategory = {
       .limit(take)
       .populate('category')
       .populate('created_by')
+      .sort({'created_at': -1})
       .exec();
     
     // re-init the file download
