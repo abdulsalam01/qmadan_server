@@ -61,15 +61,20 @@ module.exports = baseCloudGenerateLinkController = async(file) => {
 
   const bucketName = firebase.bucket;
   const retriveImage = await firebase.storage
-    .bucket(bucketName).file(file)
-    .getSignedUrl({
-      action: 'read',
-      expires: expireDate
-    })
-    .then(res => res[0])
-    .catch(err => err);
+    .bucket(bucketName).file(file);
   
-  return retriveImage;
+  // make public
+  retriveImage.makePublic();
+
+  // signed-url - if needed
+  // .getSignedUrl({
+  //   action: 'read',
+  //   expires: expireDate
+  // })
+  // .then(res => res)
+  // .catch(err => err);
+  
+  return retriveImage.publicUrl();
 }
 
 module.exports = baseCloudRemoveController = async(file) => {
